@@ -1,5 +1,7 @@
 from TwitterSearch import *
 import json, plotly
+import plotly.plotly as py
+import time
 from plotly.graph_objs import *
 
 # Future: Graphs, compare two users
@@ -33,6 +35,7 @@ except TwitterSearchException as e: # catch all those ugly errors
 
 print(final)
 
+#writes into a file
 with open('tweets.txt', 'w') as outfile:
     json.dump(final, outfile)
 
@@ -40,11 +43,11 @@ print("The number of words is: " + str(len(final)))
 
 for negativeword in negativelist:
     print("The word %s" % negativeword + " occurs: " + str(final.count(negativeword)) + " times")
+    badwords = badwords + final.count(negativeword)
 
 for positiveword in positivelist:
     print("The word %s" % positiveword + " occurs: " + str(final.count(positiveword)) + " times")
-
-#write it into a file
+    goodwords = goodwords + final.count(positiveword)
 
 if negativeword > positiveword:
     print("The user @" + result + " is a negative individual")
@@ -58,21 +61,15 @@ plotly.tools.set_credentials_file(
     username='nachozombie',
     api_key='ajvmmn1scx'
 )
-plotly.offline.plot({
-    "data": [
-    {
-      "labels": [
-        "Positive Words",
-        "Negative Words"
-      ],
-      "type": "pie",
-      "values": [
-        goodwords,
-        badwords
-      ]
-    }
-  ],
-  "layout": {
-    "title": "Your user data visualized"
-  }
-})
+
+print("We have" + goodwords + "words of encouragement")
+print("We have" + badwords + "words of toxicity")
+
+fig = {
+    'data': [{'labels': ['Positive Words', 'Negative Words'],
+              'values': [goodwords, badwords],
+              'type': 'pie'}],
+    'layout': {'title': 'Your user data visualized'}
+     }
+time.sleep(10)
+py.plot(fig)
