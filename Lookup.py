@@ -62,8 +62,8 @@ plotly.tools.set_credentials_file(
     api_key='ajvmmn1scx'
 )
 
-print("We have" + goodwords + "words of encouragement")
-print("We have" + badwords + "words of toxicity")
+print("We have " + str(goodwords) + " words of encouragement")
+print("We have " + str(badwords) + " words of toxicity")
 
 fig = {
     'data': [{'labels': ['Positive Words', 'Negative Words'],
@@ -71,5 +71,6 @@ fig = {
               'type': 'pie'}],
     'layout': {'title': 'Your user data visualized'}
      }
+
 time.sleep(10)
 py.plot(fig)
